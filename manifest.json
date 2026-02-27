@@ -1,0 +1,10 @@
+{
+  "id": "feishu-sync",
+  "name": "Feishu Sync",
+  "version": "0.0.1",
+  "minAppVersion": "1.5.0",
+  "description": "Manual upload/download sync between Obsidian and Feishu docs for multiple accounts.",
+  "author": "Danny",
+  "authorUrl": "",
+  "isDesktopOnly": false
+}
