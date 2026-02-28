@@ -3075,11 +3075,38 @@ var _FeishuDocUploadService = class _FeishuDocUploadService {
       raw[col] = Math.max(_FeishuDocUploadService.MIN_SHEET_COLUMN_WIDTH, raw[col]);
     }
     const total = raw.reduce((sum, item) => sum + item, 0);
-    if (total <= _FeishuDocUploadService.MAX_SHEET_TOTAL_WIDTH) {
+    if (total <= 900) {
       return raw.map((item) => Math.max(1, Math.round(item)));
     }
-    const ratio = _FeishuDocUploadService.MAX_SHEET_TOTAL_WIDTH / total;
-    return raw.map((item) => Math.max(1, Math.floor(item * ratio)));
+    const over300 = raw.filter(
+      (item) => item > _FeishuDocUploadService.MAX_SHEET_COLUMN_WIDTH_THREE_WIDE
+    ).length;
+    if (over300 >= 3) {
+      return raw.map(
+        (item) => Math.max(
+          1,
+          Math.min(_FeishuDocUploadService.MAX_SHEET_COLUMN_WIDTH_THREE_WIDE, Math.round(item))
+        )
+      );
+    }
+    const over400 = raw.filter(
+      (item) => item > _FeishuDocUploadService.MAX_SHEET_COLUMN_WIDTH_MULTI_WIDE
+    ).length;
+    if (over400 >= 2) {
+      return raw.map(
+        (item) => Math.max(
+          1,
+          Math.min(_FeishuDocUploadService.MAX_SHEET_COLUMN_WIDTH_MULTI_WIDE, Math.round(item))
+        )
+      );
+    }
+    const over500 = raw.filter((item) => item > _FeishuDocUploadService.MAX_SHEET_COLUMN_WIDTH).length;
+    if (over500 >= 1) {
+      return raw.map(
+        (item) => Math.max(1, Math.min(_FeishuDocUploadService.MAX_SHEET_COLUMN_WIDTH, Math.round(item)))
+      );
+    }
+    return raw.map((item) => Math.max(1, Math.round(item)));
   }
   measureSheetCellDisplayWidth(value) {
     let width = 0;
@@ -3331,7 +3358,9 @@ _FeishuDocUploadService.DEFAULT_RATE_LIMIT_RETRY_LIMIT = 5;
 _FeishuDocUploadService.DEFAULT_RATE_LIMIT_RETRY_DELAY_MS = 1e4;
 _FeishuDocUploadService.DEFAULT_ASSET_UPLOAD_DELAY_MS = 3e3;
 _FeishuDocUploadService.MIN_SHEET_COLUMN_WIDTH = 100;
-_FeishuDocUploadService.MAX_SHEET_TOTAL_WIDTH = 900;
+_FeishuDocUploadService.MAX_SHEET_COLUMN_WIDTH = 500;
+_FeishuDocUploadService.MAX_SHEET_COLUMN_WIDTH_MULTI_WIDE = 400;
+_FeishuDocUploadService.MAX_SHEET_COLUMN_WIDTH_THREE_WIDE = 300;
 var FeishuDocUploadService = _FeishuDocUploadService;
 function toBase64UrlUtf8(input) {
   if (typeof Buffer !== "undefined") {

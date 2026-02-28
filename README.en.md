@@ -29,6 +29,12 @@ Manual two-way sync between Obsidian Markdown files and Feishu Docs (Docx/Wiki),
 - Table support:
   - Upload: parse Markdown table into Feishu Sheet, with style/alignment/column-width handling
   - Download: optional export of Feishu Sheet as Excel and insert as Markdown attachment link
+  - Column width strategy:
+    - Base width is computed from cell content (minimum width per column is 100)
+    - Tiered caps apply only when total table width exceeds 900:
+      - If columns with width `>300` are `>=3`, cap column width at `300`
+      - Else if columns with width `>400` are `>=2`, cap column width at `400`
+      - Else if any column width is `>500`, cap column width at `500`
 - Rate limit protection:
   - Asset upload throttling (enabled by default)
   - Auto retry on HTTP 429 (enabled by default)
