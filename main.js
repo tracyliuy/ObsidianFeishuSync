@@ -3180,11 +3180,21 @@ var _FeishuDocUploadService = class _FeishuDocUploadService {
   }
   measureSingleCharWidth(char) {
     const code = char.codePointAt(0) ?? 0;
-    const isUpper = code >= 65 && code <= 90;
-    if (isUpper)
+    if (char === "W")
+      return 14;
+    if (char === "M" || char === "m")
+      return 12;
+    if (char === "N" || char === "O" || char === "Q" || char === "w")
+      return 11;
+    if ("UGHCDVXA".includes(char))
       return 10;
-    const isLower = code >= 97 && code <= 122;
-    if (isLower)
+    if (char === "r" || char === "f" || char === "t")
+      return 6;
+    if (char === "I" || char === "i" || char === "j" || char === "l")
+      return 5;
+    const isLatinLetter = code >= 65 && code <= 90 || // A-Z
+    code >= 97 && code <= 122;
+    if (isLatinLetter)
       return 9;
     const isDigit = code >= 48 && code <= 57;
     if (isDigit)
