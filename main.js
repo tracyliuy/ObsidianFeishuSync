@@ -1187,26 +1187,16 @@ function parseMarkdownToBlockGraph(markdown, options = {}) {
       }
       const code = contentLines.join("\n");
       const isMermaid = lang.trim().toLowerCase() === "mermaid";
-      const shouldText = !isMermaid || mermaidUploadMode === "text" || mermaidUploadMode === "both";
-      const shouldImage = isMermaid && (mermaidUploadMode === "image" || mermaidUploadMode === "both");
+      const shouldText = !isMermaid;
+      const shouldImage = isMermaid && (mermaidUploadMode === "text" || mermaidUploadMode === "image" || mermaidUploadMode === "both");
       if (shouldText) {
-        if (isMermaid) {
-          addBlock({
-            block_type: 40,
-            add_ons: {
-              component_type_id: "blk_631fefbbae02400430b8f9f4",
-              record: JSON.stringify({ data: code })
-            }
-          });
-        } else {
-          addBlock({
-            block_type: 14,
-            code: {
-              elements: [{ text_run: { content: code, text_element_style: {} } }],
-              style: { language: resolveCodeLanguageId(lang), wrap: true }
-            }
-          });
-        }
+        addBlock({
+          block_type: 14,
+          code: {
+            elements: [{ text_run: { content: code, text_element_style: {} } }],
+            style: { language: resolveCodeLanguageId(lang), wrap: true }
+          }
+        });
       }
       if (shouldImage) {
         const imageBlockId = addBlock({
